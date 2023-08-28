@@ -1,6 +1,6 @@
 const UserService = require('../services/user.service');
 
-module.exports = async (_req, res) => {
+const getAllUsers = async (_req, res) => {
   try {
     const users = await UserService.getUsers();
 
@@ -10,4 +10,24 @@ module.exports = async (_req, res) => {
       .status(500)
       .json({ message: 'Erro ao buscar usuários no banco', error: err.message });
   }
+};
+
+const getUserById = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const user = await UserService.getByUserId(id);
+
+    if (!user) return res.status(404).json({ message: 'User does not exist' });
+
+    res.status(200).json(user);
+  } catch (err) {
+    res
+      .status(500)
+      .json({ message: 'Erro ao buscar usuários no banco', error: err.message });
+  }
+};
+
+module.exports = {
+  getAllUsers,
+  getUserById,
 };
