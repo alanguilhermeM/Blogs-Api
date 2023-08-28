@@ -4,8 +4,8 @@ const UserService = require('../services/user.service');
 const secret = process.env.JWT_SECRET || '12345';
 
 const isBodyValid = (email, password) => email && password;
-const validateField = (user, password, email) => {
-  if (!user || user.password !== password || email !== user.email) {
+const validateField = (user, password) => {
+  if (!user || user.password !== password) {
     return false;
   }
 };
@@ -19,8 +19,10 @@ module.exports = async (req, res) => {
     }
 
     const user = await UserService.getByEmail(email);
-    const validate = validateField(user, password, email);
+    // console.log(user);
+    const validate = validateField(user, password);
     if (validate === false) {
+      // console.log(validate);
       return res.status(400).json({ message: 'Invalid fields' });
     }
 
