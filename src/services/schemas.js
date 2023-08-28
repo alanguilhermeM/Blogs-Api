@@ -7,4 +7,8 @@ const insertUser = Joi.object({
   password: Joi.string().length(6).message('"password" length must be at least 6 characters long'),
 });
 
-module.exports = { insertUser };
+const insertCategory = Joi.object({
+  name: Joi.string().min(1).message('"name" is required"').required(),
+});
+
+module.exports = { insertUser, insertCategory };
