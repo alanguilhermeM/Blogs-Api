@@ -12,10 +12,22 @@ const createCategory = async (req, res) => {
   } catch (err) {
     res
       .status(500)
-      .json({ message: 'OI', error: err.message });
+      .json({ message: 'error', error: err.message });
+  }
+};
+
+const getCategories = async (req, res) => {
+  try {
+    const categories = await Category.getCategories();
+    res.status(200).json(categories);
+  } catch (err) {
+    res
+      .status(500)
+      .json({ message: 'error', error: err.message });
   }
 };
 
 module.exports = {
   createCategory,
+  getCategories,
 };
