@@ -11,4 +11,13 @@ const insertCategory = Joi.object({
   name: Joi.string().min(1).message('"name" is required"').required(),
 });
 
-module.exports = { insertUser, insertCategory };
+const insertPost = Joi.object({
+  title: Joi.string().required(),
+  content: Joi.string().required(),
+  categoryIds: Joi.array().items(Joi.number()).required(),
+}).messages({
+  'string.empty': 'Some required fields are missing',
+  'any.required': 'Some required fields are missing',
+});
+
+module.exports = { insertUser, insertCategory, insertPost };

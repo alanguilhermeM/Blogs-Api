@@ -1,4 +1,4 @@
-const { insertUser, insertCategory } = require('../schemas');
+const { insertUser, insertCategory, insertPost } = require('../schemas');
 
 const validateNewUser = ({ displayName, email, password }) => {
   const { error } = insertUser
@@ -15,7 +15,16 @@ const validateNewCategory = (name) => {
   }
 };
 
+const validateNewPost = ({ title, content, categoryIds }) => {
+  const { error } = insertPost
+    .validate({ title, content, categoryIds });
+  if (error) {
+    return { status: 400, message: error.details[0].message };
+  }
+};
+
 module.exports = {
   validateNewUser,
   validateNewCategory,
+  validateNewPost,
 };
