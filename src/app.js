@@ -22,6 +22,7 @@ app.post('/post', validateJWT, routes.createPost);
 app.get('/post', validateJWT, routes.getPosts);
 app.get('/post/:id', validateJWT, routes.getPostById);
 app.put('/post/:id', validateJWT, routes.updatePost);
+app.delete('/post/:id', validateJWT, routes.delet);
 // É importante exportar a constante `app`,
 // para que possa ser utilizada pelo arquivo `src/server.js`
 module.exports = app;
