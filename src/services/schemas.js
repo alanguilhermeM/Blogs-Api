@@ -20,4 +20,12 @@ const insertPost = Joi.object({
   'any.required': 'Some required fields are missing',
 });
 
-module.exports = { insertUser, insertCategory, insertPost };
+const updatePost = Joi.object({
+  title: Joi.string().required(),
+  content: Joi.string().required(),
+}).messages({
+  'string.empty': 'Some required fields are missing',
+  'any.required': 'Some required fields are missing',
+});
+
+module.exports = { insertUser, insertCategory, insertPost, updatePost };

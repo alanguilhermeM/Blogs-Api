@@ -23,8 +23,17 @@ const validateNewPost = ({ title, content, categoryIds }) => {
   }
 };
 
+const validateUpdatePost = (title, content) => {
+  const { error } = insertPost
+    .validate({ title, content });
+  if (error) {
+    return { status: 400, message: error.details[0].message };
+  }
+};
+
 module.exports = {
   validateNewUser,
   validateNewCategory,
   validateNewPost,
+  validateUpdatePost,
 };

@@ -1,4 +1,5 @@
 const { BlogPost, PostCategory, User, Category, sequelize } = require('../models');
+// const { validateUpdatePost } = require('./validations/validationsInputValues');
 
 const createPost = async (title, content, categoryIds, userId) => {
   const response = await sequelize.transaction(async (t) => {
@@ -53,8 +54,30 @@ const getPostById = async (id) => {
   return posts;
 };
 
+const updatePost = async (id, title, content, userId) => {
+  const post = await BlogPost.findOne({ where: { id } });
+  if (post.userId !== userId) return ({ status: 401, data: { message: 'Unauthorized user' } });
+
+  // const error = validateUpdatePost(title, content);
+  // if (error) return ({ status: 400, data: { message: 'Some required fields are missing' } });
+  if (!title || !content) {
+    return ({ status: 400, data: { message: 'Some required fields are missing' } });
+  }
+
+  await BlogPost.update({ title, content }, { where: { id } });
+  const updatedPost = await BlogPost.findOne({
+    where: { id },
+    include: [
+      { model: User, as: 'user', attributes: { exclude: ['password'] } },
+      { model: Category, as: 'categories', through: { attributes: [] } },
+    ],
+  });
+  return { status: 200, data: updatedPost };
+};
+
 module.exports = {
   createPost,
   getPosts,
   getPostById,
+  updatePost,
 };
