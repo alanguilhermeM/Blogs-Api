@@ -33,7 +33,28 @@ const getPosts = async () => {
   return posts;
 };
 
+const getPostById = async (id) => {
+  const posts = await BlogPost.findOne({
+    where: { id },
+    include: [
+      {
+        model: User,
+        as: 'user', // O apelido da inclusão, você pode usar esse apelido para acessar os dados
+        attributes: ['id', 'displayName', 'email', 'image'],
+      },
+      {
+        model: Category,
+        as: 'categories', // O apelido da inclusão, você pode usar esse apelido para acessar os dados
+        attributes: ['id', 'name'],
+        through: { attributes: [] },
+      },
+    ],
+  });
+  return posts;
+};
+
 module.exports = {
   createPost,
   getPosts,
+  getPostById,
 };
